@@ -1,9 +1,10 @@
-package com.sivalabs.bookstore.common;
+package com.sivalabs.bookstore.promotions.common;
 
 import com.sivalabs.bookstore.promotions.domain.Promotion;
 import com.sivalabs.bookstore.promotions.domain.PromotionRepository;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.AfterAll;
+import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,16 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public abstract class AbstractIntegrationTest {
 
-    protected static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
+    protected static final PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>("postgres:15-alpine");
 
     @BeforeAll
     static void beforeAll() {
         Startables.deepStart(postgres).join();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        //postgres.stop();
     }
 
     @DynamicPropertySource
@@ -41,16 +35,14 @@ public abstract class AbstractIntegrationTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-    @Autowired
-    private PromotionRepository promotionRepository;
+    @Autowired private PromotionRepository promotionRepository;
 
-    protected final List<Promotion> promotions = List.of(
-            new Promotion(null, "P100", BigDecimal.valueOf(2)),
-            new Promotion(null, "P101", BigDecimal.valueOf(4))
-    );
+    protected final List<Promotion> promotions =
+            List.of(
+                    new Promotion(null, "P100", BigDecimal.valueOf(2)),
+                    new Promotion(null, "P101", BigDecimal.valueOf(4)));
 
-    @LocalServerPort
-    private Integer port;
+    @LocalServerPort private Integer port;
 
     @BeforeEach
     void setUp() {

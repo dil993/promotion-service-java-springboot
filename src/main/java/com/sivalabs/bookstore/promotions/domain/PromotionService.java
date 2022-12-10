@@ -1,11 +1,10 @@
 package com.sivalabs.bookstore.promotions.domain;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -13,11 +12,13 @@ import java.util.Optional;
 public class PromotionService {
     private final PromotionRepository promotionRepository;
 
-    public List<Promotion> getPromotions(List<String> isbnList) {
-        return promotionRepository.findByIsbnIn(isbnList);
+    @Transactional(readOnly = true)
+    public List<Promotion> getPromotions(List<String> productCodes) {
+        return promotionRepository.findByProductCodeIn(productCodes);
     }
 
-    public Optional<Promotion> getPromotionByIsbn(String isbn) {
-        return promotionRepository.findByIsbn(isbn);
+    @Transactional(readOnly = true)
+    public Optional<Promotion> getPromotionByProductCode(String productCode) {
+        return promotionRepository.findByProductCode(productCode);
     }
 }

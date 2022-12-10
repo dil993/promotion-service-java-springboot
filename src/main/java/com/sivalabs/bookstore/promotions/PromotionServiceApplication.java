@@ -1,4 +1,4 @@
-package com.sivalabs.bookstore;
+package com.sivalabs.bookstore.promotions;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,5 +11,4 @@ public class PromotionServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(PromotionServiceApplication.class, args);
     }
-
 }
